@@ -1,8 +1,9 @@
 using Android.App;
 using Android.OS;
 using AndroidX.AppCompat.App;
+using Xamdroid.Services;
 
-namespace Xamdroid
+namespace Xamdroid.Views
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
@@ -11,6 +12,12 @@ namespace Xamdroid
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+
+            Container.Initialize();
+
+            SupportFragmentManager?.BeginTransaction()
+                .Add(Resource.Id.activity_main_container, new ItemsFragment())
+                .Commit();
         }
     }
 }
