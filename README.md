@@ -1,3 +1,3 @@
 # xamdroid-mvvm
 
-The sample Master-Detail app by Xamarin.Android.
+LiveData based Master-Detail Xamarin.Android app.
