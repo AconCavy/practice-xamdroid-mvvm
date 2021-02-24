@@ -15,10 +15,9 @@ namespace Xamdroid.ViewModels
         private readonly MutableLiveData _description;
         private readonly MutableLiveData _text;
 
-        private ItemDetailViewModel(IDataStore<Item> dataStore = null)
+        private ItemDetailViewModel(IDataStore<Item> dataStore)
         {
-            _dataStore = dataStore ?? Container.Service.GetService<IDataStore<Item>>() ??
-                throw new ArgumentNullException(nameof(dataStore));
+            _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
             _description = new MutableLiveData(string.Empty);
             _text = new MutableLiveData(string.Empty);
         }
@@ -42,7 +41,13 @@ namespace Xamdroid.ViewModels
 
         public class Factory : Object, ViewModelProvider.IFactory
         {
-            public Object Create(Class modelClass) => new ItemDetailViewModel();
+            private readonly IDataStore<Item> _dataStore;
+
+            public Factory(IDataStore<Item> dataStore = null) =>
+                _dataStore = dataStore ?? Container.Service.GetService<IDataStore<Item>>()
+                    ?? throw new ArgumentNullException(nameof(dataStore));
+
+            public Object Create(Class modelClass) => new ItemDetailViewModel(_dataStore);
         }
     }
 }

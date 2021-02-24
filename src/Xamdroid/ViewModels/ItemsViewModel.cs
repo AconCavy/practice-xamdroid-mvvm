@@ -16,10 +16,9 @@ namespace Xamdroid.ViewModels
         private readonly IDataStore<Item> _dataStore;
         private readonly MutableLiveData _items;
 
-        private ItemsViewModel(IDataStore<Item> dataStore = null)
+        private ItemsViewModel(IDataStore<Item> dataStore)
         {
-            _dataStore = dataStore ?? Container.Service.GetService<IDataStore<Item>>() ??
-                throw new ArgumentNullException(nameof(dataStore));
+            _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
             _items = new MutableLiveData(new JavaList<Item>());
         }
 
@@ -29,7 +28,13 @@ namespace Xamdroid.ViewModels
 
         public class Factory : Object, ViewModelProvider.IFactory
         {
-            public Object Create(Class modelClass) => new ItemsViewModel();
+            private readonly IDataStore<Item> _dataStore;
+
+            public Factory(IDataStore<Item> dataStore = null) =>
+                _dataStore = dataStore ?? Container.Service.GetService<IDataStore<Item>>()
+                    ?? throw new ArgumentNullException(nameof(dataStore));
+
+            public Object Create(Class modelClass) => new ItemsViewModel(_dataStore);
         }
     }
 }
