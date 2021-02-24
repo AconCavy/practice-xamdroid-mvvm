@@ -27,7 +27,9 @@ namespace Xamdroid.ViewModels
         {
             var newItem = new Item
             {
-                Id = new Guid().ToString(), Text = Text.Value.ToString(), Description = Description.Value.ToString()
+                Id = Guid.NewGuid().ToString(),
+                Text = Text.Value.ToString(),
+                Description = Description.Value.ToString()
             };
 
             await _dataStore.AddItemAsync(newItem);
